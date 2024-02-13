@@ -1,22 +1,13 @@
-# application.yml
-
 spring:
-  config:
-    import: optional:file:.env.properties
-
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/DDoBii?serverTimezone=UTC&characterEncoding=UTF-8
     username: ijeong0416
     password: 340834
 
-# spring:
-#   config:
-#     import: optional:file:.env.properties
-
-#   datasource:
-#     url: ${DB_URL}
-#     username: ${DB_ID}
-#     password: ${DB_PW}
+  # datasource:
+    # url: ${DB_URL}
+    # username: ${DB_ID}
+    # password: ${DB_PW}
 
   jpa:
       hibernate:
@@ -28,3 +19,6 @@ spring:
           default_batch_fetch_size: 100
           format_sql: false
       open-in-view: false
+
+  config:
+    import: optional:file:.env[.properties]
