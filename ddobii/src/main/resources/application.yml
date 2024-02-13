@@ -9,6 +9,15 @@ spring:
     username: ijeong0416
     password: 340834
 
+# spring:
+#   config:
+#     import: optional:file:.env.properties
+
+#   datasource:
+#     url: ${DB_URL}
+#     username: ${DB_ID}
+#     password: ${DB_PW}
+
   jpa:
       hibernate:
         ddl-auto: update
