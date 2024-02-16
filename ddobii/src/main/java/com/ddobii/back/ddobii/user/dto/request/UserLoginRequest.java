@@ -9,7 +9,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class UserLoginRequest {
 
-    String adminId; // 아이디
+    String userId; // 아이디
 
     @NotBlank(message = "비밀번호는 최소 8자 이상, 최대 15자 이하로 설정되어야 합니다.\n" + //
             "최소한 하나의 소문자, 대문자, 숫자, 특수문자(!@#$%^&*_,.?~)를 포함해주세요.")

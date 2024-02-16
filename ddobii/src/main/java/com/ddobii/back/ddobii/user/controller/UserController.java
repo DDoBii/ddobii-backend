@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ddobii.back.ddobii.user.dto.request.UserLoginRequest;
 import com.ddobii.back.ddobii.user.dto.request.UserSignupRequest;
+import com.ddobii.back.ddobii.user.dto.response.UserLoginResponse;
 import com.ddobii.back.ddobii.user.dto.response.UserSignupResponse;
 import com.ddobii.back.ddobii.user.model.User;
 import com.ddobii.back.ddobii.user.service.UserServiceImpl;
@@ -29,10 +31,22 @@ public class UserController {
      * 회원가입 API
      */
     @PostMapping("/signup")
-    public ResponseEntity<UserSignupResponse> signup(@RequestBody UserSignupRequest userSignupRequest) {
-        UserSignupResponse userSignupResponse = userService.signup(userSignupRequest);
+    public ResponseEntity<UserSignupResponse> signup(@RequestBody UserSignupRequest request) {
 
-        return ResponseEntity.ok(userSignupResponse);
+        UserSignupResponse response = userService.signup(request);
+
+        return ResponseEntity.ok(response);
+    }
+
+    /*
+     * 로그인 API
+     */
+    @PostMapping("/login")
+    public ResponseEntity<UserLoginResponse> login(@RequestBody UserLoginRequest request) {
+
+        UserLoginResponse response = userService.login(request);
+
+        return ResponseEntity.ok(response);
     }
 
     /*
@@ -40,6 +54,7 @@ public class UserController {
      */
     @GetMapping("/getUser/{userId}")
     public ResponseEntity<User> getUserById(@PathVariable String userId) {
+
         Optional<User> userOptional = userService.getUserById(userId);
 
         return userOptional.map(ResponseEntity::ok)
@@ -51,6 +66,7 @@ public class UserController {
      */
     @GetMapping("/getAllUsers")
     public ResponseEntity<List<User>> getAllUsers() {
+        
         List<User> allUsers = userService.getAllUsers();
 
         return ResponseEntity.ok(allUsers);

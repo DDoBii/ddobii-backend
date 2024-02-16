@@ -11,5 +11,6 @@ public class UserLoginResponse {
 
     String userId; // 아이디
 
-    String name; // 비밀번호
+    String password; // 비밀번호
+
 }
