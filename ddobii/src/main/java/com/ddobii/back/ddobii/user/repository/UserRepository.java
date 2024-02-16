@@ -10,7 +10,7 @@ import com.ddobii.back.ddobii.user.model.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    // 이미 가입된 아이디인지 확인
+    // 아이디 중복 검사
     Optional<User> findByUserId(String userId);
 
 }

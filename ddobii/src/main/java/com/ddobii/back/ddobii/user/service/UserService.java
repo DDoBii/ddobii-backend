@@ -26,12 +26,15 @@ public class UserService {
     
     private final PasswordEncoder passwordEncoder;
 
+    /*
+     * 회원가입 API
+     */
     @Transactional
     public UserSignupResponse signup(UserSignupRequest request) {
-        // 이미 가입된 아이디인지 확인
+        // 아이디 중복 검사
         Optional<User> existingUser = userRepository.findByUserId(request.getUserId());
         if (existingUser.isPresent()) {
-            throw new IllegalArgumentException("이미 가입된 아이디입니다.");
+            throw new IllegalArgumentException("중복되는 아이디 입니다.");
         }
 
         User user = request.toEntity();
@@ -45,10 +48,16 @@ public class UserService {
         return new UserSignupResponse(savedUser);
     }
 
+    /*
+     * 특정 회원 조회 API
+     */
     public Optional<User> getUserById(String userId) {
         return userRepository.findByUserId(userId);
     }
 
+    /*
+     * 모든 회원 조회 API
+     */
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }

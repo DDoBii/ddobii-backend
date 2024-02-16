@@ -25,6 +25,9 @@ public class UserController {
 
     private final UserService userService;
 
+    /*
+     * 회원가입 API
+     */
     @PostMapping("/signup")
     public ResponseEntity<UserSignupResponse> signup(@RequestBody UserSignupRequest userSignupRequest) {
         UserSignupResponse userSignupResponse = userService.signup(userSignupRequest);
@@ -32,16 +35,24 @@ public class UserController {
         return ResponseEntity.ok(userSignupResponse);
     }
 
+    /*
+     * 특정 회원 조회 API
+     */
     @GetMapping("/getUser/{userId}")
     public ResponseEntity<User> getUserById(@PathVariable String userId) {
         Optional<User> userOptional = userService.getUserById(userId);
+
         return userOptional.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    /*
+     * 모든 회원 조회 API
+     */
     @GetMapping("/getAllUsers")
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> allUsers = userService.getAllUsers();
+
         return ResponseEntity.ok(allUsers);
     }
 

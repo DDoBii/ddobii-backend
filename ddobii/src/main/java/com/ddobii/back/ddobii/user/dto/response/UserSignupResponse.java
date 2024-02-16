@@ -7,11 +7,11 @@ import lombok.Getter;
 @Getter
 public class UserSignupResponse {
 
-    String userId;
+    String userId; // 아이디
 
-    String name;
+    String name; // 이름
 
-    String mbti;
+    String mbti; // 엠비티아이
 
     public UserSignupResponse(User user) {
         this.userId = user.getUserId();

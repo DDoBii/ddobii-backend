@@ -36,10 +36,4 @@ public class User {
     @Column(nullable = true)
     private String mbti;
 
-    public User(String userId, String password, String name, String mbti) {
-        this.userId = userId;
-        this.password = password;
-        this.name = name;
-        this.mbti = mbti;
-    }
 }

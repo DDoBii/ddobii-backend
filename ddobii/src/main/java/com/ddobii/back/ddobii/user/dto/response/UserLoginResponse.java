@@ -9,7 +9,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class UserLoginResponse {
 
-    String userId;
+    String userId; // 아이디
 
-    String name;
+    String name; // 비밀번호
 }
