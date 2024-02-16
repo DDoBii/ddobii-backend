@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ddobii.back.ddobii.user.dto.request.UserSignupRequest;
 import com.ddobii.back.ddobii.user.dto.response.UserSignupResponse;
 import com.ddobii.back.ddobii.user.model.User;
-import com.ddobii.back.ddobii.user.service.UserService;
+import com.ddobii.back.ddobii.user.service.UserServiceImpl;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/ddobii")
 public class UserController {
 
-    private final UserService userService;
+    private final UserServiceImpl userService;
 
     /*
      * 회원가입 API
