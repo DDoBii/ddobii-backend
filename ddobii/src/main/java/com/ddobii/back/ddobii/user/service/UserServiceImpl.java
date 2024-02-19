@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ddobii.back.ddobii.global.security.jwt.JwtTokenProvider;
 import com.ddobii.back.ddobii.user.dto.request.UserLoginRequest;
 import com.ddobii.back.ddobii.user.dto.request.UserSignupRequest;
 import com.ddobii.back.ddobii.user.dto.response.UserLoginResponse;
@@ -29,6 +30,8 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     private final PasswordEncoder passwordEncoder;
+
+    private final JwtTokenProvider jwtTokenProvider;
 
     /*
      * 회원가입 API
@@ -70,8 +73,11 @@ public class UserServiceImpl implements UserService {
             throw new BadCredentialsException("비밀번호가 올바르지 않습니다.: " + userId);
         }
 
-        // UserLoginResponse 생성 및 반환
-        UserLoginResponse userLoginResponse = new UserLoginResponse(userId, password);
+        // JWT 토큰 생성
+        String jwtToken = jwtTokenProvider.generateToken(user.getUserId());
+
+        // JWT 토큰을 포함한 UserLoginResponse 생성
+        UserLoginResponse userLoginResponse = new UserLoginResponse(userId, jwtToken);
 
         return userLoginResponse;
     }
