@@ -8,9 +8,6 @@ import lombok.Data;
 @Builder
 @AllArgsConstructor
 public class UserLoginResponse {
-
-    String userId; // 아이디
-
-    String accessToken; // 권한인증
-
+    String userId;
+    String accessToken;
 }

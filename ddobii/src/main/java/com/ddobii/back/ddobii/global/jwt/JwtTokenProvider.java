@@ -1,4 +1,4 @@
-package com.ddobii.back.ddobii.global.security.jwt;
+package com.ddobii.back.ddobii.global.jwt;
 
 import java.time.Duration;
 import java.util.Date;
