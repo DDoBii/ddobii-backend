@@ -11,6 +11,6 @@ public class UserLoginResponse {
 
     String userId; // 아이디
 
-    String password; // 비밀번호
+    String accessToken; // 권한인증
 
 }
