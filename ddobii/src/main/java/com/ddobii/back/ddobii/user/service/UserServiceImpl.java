@@ -5,13 +5,13 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ddobii.back.ddobii.global.security.jwt.JwtTokenProvider;
+import com.ddobii.back.ddobii.global.error.enums.ErrorCode;
+import com.ddobii.back.ddobii.global.error.exception.DdobiiException;
+import com.ddobii.back.ddobii.global.jwt.JwtTokenProvider;
 import com.ddobii.back.ddobii.user.dto.request.UserLoginRequest;
 import com.ddobii.back.ddobii.user.dto.request.UserSignupRequest;
 import com.ddobii.back.ddobii.user.dto.response.UserLoginResponse;
@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
         // 아이디 중복 검사
         Optional<User> existingUser = userRepository.findByUserId(request.getUserId());
         if (existingUser.isPresent()) {
-            throw new IllegalArgumentException("중복되는 아이디 입니다.");
+            throw new DdobiiException(ErrorCode.USER_ID_DUPLICATION);
         }
 
         User user = request.toEntity();
@@ -63,14 +63,14 @@ public class UserServiceImpl implements UserService {
     public UserLoginResponse login(UserLoginRequest userLoginRequest) {
         String userId = userLoginRequest.getUserId();
         String password = userLoginRequest.getPassword();
-
+        
         User user = userRepository.findByUserId(userId)
-                .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다: " + userId));
+                .orElseThrow(() -> new DdobiiException(ErrorCode.USER_NOT_FOUND));
 
         // 비밀번호 검증
         boolean passwordMatch = passwordEncoder.matches(password, user.getPassword());
         if (!passwordMatch) {
-            throw new BadCredentialsException("비밀번호가 올바르지 않습니다.: " + userId);
+            throw new DdobiiException(ErrorCode.PASSWORD_NOT_FOUND);
         }
 
         // JWT 토큰 생성

@@ -1,5 +1,6 @@
 package com.ddobii.back.ddobii.user.dto.request;
 
+import com.ddobii.back.ddobii.global.error.enums.RegexConstants;
 import com.ddobii.back.ddobii.user.model.User;
 
 import jakarta.validation.constraints.NotBlank;
@@ -13,16 +14,18 @@ import lombok.Getter;
 @Builder
 public class UserSignupRequest {
 
-    String userId; // 아이디
+    @NotBlank(message = "아이디 항목이 누락되지 않았는지 확인해주세요!")
+    String userId;
 
-    @NotBlank(message = "비밀번호는 최소 8자 이상, 최대 15자 이하로 설정되어야 합니다.\n" + //
-            "최소한 하나의 소문자, 대문자, 숫자, 특수문자(!@#$%^&*_,.?~)를 포함해주세요.")
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_,.?~]).{8,15}$")
-    String password; // 비밀번호
+    @NotBlank(message = "비밀번호 항목이 누락되지 않았는지 확인해주세요!")
+    @Pattern(regexp = RegexConstants.PASSWORD_REGEX, message = "비밀번호를 다시 입력해주세요. 4~16자의 영문, 대소문자, 숫자, 특수문자를 자유롭게 조합하여 설정해주세요!")
+    String password;
 
-    String name; // 이름
+    @NotBlank(message = "이름 항목이 누락되지 않았는지 확인해주세요!")
+    String name;
 
-    String mbti; // 엠비티아이
+    @NotBlank(message = "엠비티아이 항목이 누락되지 않았는지 확인해주세요!")
+    String mbti;
 
     public User toEntity() {
         return User.builder()
