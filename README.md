@@ -49,4 +49,7 @@ MBTI(Myers-Briggs Type Indicator) 기반의 커뮤니티 프로젝트는 사용�
 ## 메모
 
 - 협업 - swagger 적용. link: http://localhost:8080/swagger-ui/index.html
+- 엔터티 폴더 분리
+- 토큰 유효성 검사
+- 로그인한 회원 이름 가져오기
 
