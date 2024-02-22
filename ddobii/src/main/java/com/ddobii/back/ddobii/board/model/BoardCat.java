@@ -15,7 +15,7 @@ public class BoardCat {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;        // ID
+    private Long id; // ID
 
     @Column(length = 20, nullable = false)
     private String mbtiCat; // 엠비티아이 카테고리

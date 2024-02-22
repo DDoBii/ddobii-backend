@@ -22,9 +22,12 @@ import com.ddobii.back.ddobii.user.dto.response.UserSignupResponse;
 import com.ddobii.back.ddobii.user.model.User;
 import com.ddobii.back.ddobii.user.service.UserServiceImpl;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+@Tag(name = "사용자 컨트롤러", description = "사용자 API입니다.")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/ddobii")
@@ -32,9 +35,7 @@ public class UserController {
 
     private final UserServiceImpl userService;
 
-    /*
-     * 회원가입 API
-     */
+    @Operation(summary = "회원가입", description = "회원가입을 진행합니다.")
     @PostMapping("/signup")
     public ResponseEntity<UserSignupResponse> signup(@Valid @RequestBody UserSignupRequest request) {
 
@@ -43,9 +44,7 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
-    /*
-     * 로그인 API
-     */
+    @Operation(summary = "로그인", description = "사용자 로그인을 수행합니다.")
     @PostMapping("/login")
     public ResponseEntity<UserLoginResponse> login(@Valid @RequestBody UserLoginRequest request) {
 
@@ -54,9 +53,7 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
-    /*
-     * 특정 회원 조회 API
-     */
+    @Operation(summary = "특정 회원 조회", description = "특정 회원의 정보를 조회합니다.")
     @GetMapping("/getUser/{userId}")
     public ResponseEntity<User> getUserById(@PathVariable String userId) {
 
@@ -66,20 +63,16 @@ public class UserController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    /*
-     * 모든 회원 조회 API
-     */
+    @Operation(summary = "모든 회원 조회", description = "모든 회원의 정보를 조회합니다.")
     @GetMapping("/getAllUsers")
     public ResponseEntity<List<User>> getAllUsers() {
-        
+
         List<User> allUsers = userService.getAllUsers();
 
         return ResponseEntity.ok(allUsers);
     }
 
-    /*
-     * 특정 예외 처리를 반환
-     */
+    @Operation(summary = "특정 예외 처리", description = "DDOBII 예외를 처리합니다.")
     @ExceptionHandler(DdobiiException.class)
     public ResponseEntity<ErrorResponse> handleSupportException(DdobiiException ex) {
 
@@ -87,5 +80,4 @@ public class UserController {
 
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
-
 }

@@ -11,11 +11,11 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "board")
 @NoArgsConstructor
-public class Board extends BaseTime{
+public class Board extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long boardId;            // ID
+    private Long boardId; // ID
 
     @Column(name = "title", nullable = false, length = 100)
     private String title;
