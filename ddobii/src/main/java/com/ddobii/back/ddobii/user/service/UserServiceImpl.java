@@ -56,31 +56,32 @@ public class UserServiceImpl implements UserService {
         return new UserSignupResponse(savedUser);
     }
 
-    /*
-     * 로그인 API
-     */
-    @Override
-    public UserLoginResponse login(UserLoginRequest userLoginRequest) {
-        String userId = userLoginRequest.getUserId();
-        String password = userLoginRequest.getPassword();
-        
-        User user = userRepository.findByUserId(userId)
-                .orElseThrow(() -> new DdobiiException(ErrorCode.USER_NOT_FOUND));
+/*
+ * 로그인 API
+ */
+@Override
+public UserLoginResponse login(UserLoginRequest userLoginRequest) {
+    String userId = userLoginRequest.getUserId();
+    String password = userLoginRequest.getPassword();
+    
+    User user = userRepository.findByUserId(userId)
+            .orElseThrow(() -> new DdobiiException(ErrorCode.USER_NOT_FOUND));
 
-        // 비밀번호 검증
-        boolean passwordMatch = passwordEncoder.matches(password, user.getPassword());
-        if (!passwordMatch) {
-            throw new DdobiiException(ErrorCode.PASSWORD_NOT_FOUND);
-        }
-
-        // JWT 토큰 생성
-        String jwtToken = jwtTokenProvider.generateToken(user.getUserId());
-
-        // JWT 토큰을 포함한 UserLoginResponse 생성
-        UserLoginResponse userLoginResponse = new UserLoginResponse(userId, jwtToken);
-
-        return userLoginResponse;
+    // 비밀번호 검증
+    boolean passwordMatch = passwordEncoder.matches(password, user.getPassword());
+    if (!passwordMatch) {
+        throw new DdobiiException(ErrorCode.PASSWORD_NOT_FOUND);
     }
+
+    // JWT 토큰 생성
+    JwtTokenProvider.TokenPair tokenPair = jwtTokenProvider.generateTokens(user.getUserId());
+
+    // JWT 토큰을 포함한 UserLoginResponse 생성
+    UserLoginResponse userLoginResponse = new UserLoginResponse(userId, tokenPair);
+
+    return userLoginResponse;
+}
+
 
     /*
      * 특정 회원 조회 API
