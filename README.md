@@ -49,4 +49,5 @@ MBTI(Myers-Briggs Type Indicator) 기반의 커뮤니티 프로젝트는 사용�
 ## 메모
 
 - 협업 - swagger 적용.
+  link: http://localhost:8080/swagger-ui/index.html
 
