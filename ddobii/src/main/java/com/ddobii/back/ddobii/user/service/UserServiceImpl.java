@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ddobii.back.ddobii.global.error.enums.ErrorCode;
 import com.ddobii.back.ddobii.global.error.exception.DdobiiException;
 import com.ddobii.back.ddobii.global.jwt.JwtTokenProvider;
+import com.ddobii.back.ddobii.global.jwt.TokenPair;
 import com.ddobii.back.ddobii.user.dto.request.UserLoginRequest;
 import com.ddobii.back.ddobii.user.dto.request.UserSignupRequest;
 import com.ddobii.back.ddobii.user.dto.response.UserLoginResponse;
@@ -74,7 +75,7 @@ public UserLoginResponse login(UserLoginRequest userLoginRequest) {
     }
 
     // JWT 토큰 생성
-    JwtTokenProvider.TokenPair tokenPair = jwtTokenProvider.generateTokens(user.getUserId());
+    TokenPair tokenPair = jwtTokenProvider.generateTokens(user.getUserId());
 
     // JWT 토큰을 포함한 UserLoginResponse 생성
     UserLoginResponse userLoginResponse = new UserLoginResponse(userId, tokenPair);

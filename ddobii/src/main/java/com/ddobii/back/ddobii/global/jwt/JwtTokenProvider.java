@@ -66,23 +66,4 @@ public class JwtTokenProvider {
                 .parseClaimsJws(token)
                 .getBody();
     }
-
-    // 액세스 토큰과 리프레시 토큰을 담은 객체
-    public static class TokenPair {
-        private final String accessToken;
-        private final String refreshToken;
-
-        public TokenPair(String accessToken, String refreshToken) {
-            this.accessToken = accessToken;
-            this.refreshToken = refreshToken;
-        }
-
-        public String getAccessToken() {
-            return accessToken;
-        }
-
-        public String getRefreshToken() {
-            return refreshToken;
-        }
-    }
 }
