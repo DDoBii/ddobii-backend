@@ -15,9 +15,6 @@ import io.jsonwebtoken.security.Keys;
 @Component
 public class JwtTokenProvider {
 
-    // @Value("${security.jwt.secret}")
-    // private String secretKey;
-
     private String secretKey;
 
     public JwtTokenProvider() {
@@ -26,29 +23,34 @@ public class JwtTokenProvider {
     }
 
     /**
-     * JWT 토큰을 생성하는 메서드입니다.
+     * 액세스 토큰과 리프레시 토큰을 생성하는 메서드입니다.
      *
      * @param userId 사용자 ID
-     * @return 생성된 JWT 토큰
+     * @return 생성된 액세스 토큰과 리프레시 토큰을 담은 객체
      */
-    public String generateToken(String userId) {
+    public TokenPair generateTokens(String userId) {
         Date now = new Date();
-        // JWT 토큰을 생성하는 빌더를 시작
-        return Jwts.builder()
-                // JWT 헤더에 유형을 설정 (Type)
+        // 액세스 토큰 생성
+        String accessToken = Jwts.builder()
                 .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
-                // JWT 토큰의 발급자 설정 (Issuer)
                 .setIssuer("fresh")
-                // 토큰 발급 시간 설정 (Issued At)
                 .setIssuedAt(now)
-                // 토큰 만료 시간 설정 (현재 시간으로부터 30분 후)
                 .setExpiration(new Date(now.getTime() + Duration.ofMinutes(30).toMillis()))
-                // JWT 클레임에 사용자 ID 추가
                 .claim("id", userId)
-                // JWT 토큰을 시크릿 키로 서명하고 알고리즘은 HS256을 사용
                 .signWith(Keys.hmacShaKeyFor(secretKey.getBytes()), SignatureAlgorithm.HS256)
-                // 최종적인 JWT 문자열 반환
                 .compact();
+
+        // 리프레시 토큰 생성
+        String refreshToken = Jwts.builder()
+                .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
+                .setIssuer("fresh")
+                .setIssuedAt(now)
+                .setExpiration(new Date(now.getTime() + Duration.ofDays(7).toMillis())) // 예시로 7일 설정
+                .claim("id", userId)
+                .signWith(Keys.hmacShaKeyFor(secretKey.getBytes()), SignatureAlgorithm.HS256)
+                .compact();
+
+        return new TokenPair(accessToken, refreshToken);
     }
 
     /**
@@ -59,14 +61,28 @@ public class JwtTokenProvider {
      */
     @SuppressWarnings("deprecation")
     public Claims parseJwtToken(String token) {
-        // JWT 토큰을 파싱하여 클레임(데이터)을 추출하는 메서드
         return Jwts.parser()
-                // 시크릿 키를 이용하여 토큰을 검증하고 파싱
                 .setSigningKey(Keys.hmacShaKeyFor(secretKey.getBytes()))
-                // 전달된 JWT 토큰을 파싱하고 서명 검증
                 .parseClaimsJws(token)
-                // 토큰의 클레임(데이터)을 반환
                 .getBody();
     }
 
+    // 액세스 토큰과 리프레시 토큰을 담은 객체
+    public static class TokenPair {
+        private final String accessToken;
+        private final String refreshToken;
+
+        public TokenPair(String accessToken, String refreshToken) {
+            this.accessToken = accessToken;
+            this.refreshToken = refreshToken;
+        }
+
+        public String getAccessToken() {
+            return accessToken;
+        }
+
+        public String getRefreshToken() {
+            return refreshToken;
+        }
+    }
 }
